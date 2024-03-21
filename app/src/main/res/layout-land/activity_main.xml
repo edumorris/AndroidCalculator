@@ -26,7 +26,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editTextNumberSigned"
+        android:id="@+id/result"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -56,8 +56,8 @@
         android:layout_height="45dp"
         android:ems="10"
         android:inputType="numberSigned"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextNumberSigned"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumberSigned"
+        app:layout_constraintBaseline_toBaselineOf="@+id/result"
+        app:layout_constraintEnd_toStartOf="@+id/result"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
