@@ -59,7 +59,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="numberSigned"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/result" />
@@ -207,16 +207,6 @@
         app:layout_constraintTop_toBottomOf="@+id/btn1" />
 
     <Button
-        android:id="@+id/btnDecimal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:minWidth="48dp"
-        android:text="."
-        app:layout_constraintBaseline_toBaselineOf="@+id/btn0"
-        app:layout_constraintStart_toEndOf="@+id/btn0" />
-
-    <Button
         android:id="@+id/btnResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -225,5 +215,15 @@
         android:text="="
         app:layout_constraintBaseline_toBaselineOf="@+id/btnDecimal"
         app:layout_constraintStart_toEndOf="@+id/btnDecimal" />
+
+    <Button
+        android:id="@+id/btnDecimal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:minWidth="48dp"
+        android:text="@string/decimal_point"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn0"
+        app:layout_constraintStart_toEndOf="@+id/btn0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

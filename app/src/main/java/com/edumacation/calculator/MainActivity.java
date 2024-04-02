@@ -1,6 +1,7 @@
 package com.edumacation.calculator;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     // variable to hold operands and type of calculations
     private Double operand1 = null, operand2 = null;
-    private String pendingOp = "=";
+    private String pendingOp = "=", TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        result = (EditText) findViewById(R.id.result);
-        newNumber = (EditText) findViewById(R.id.newNum);
+        result = findViewById(R.id.result);
+        newNumber = findViewById(R.id.newNum);
         displayOperation = (TextView) findViewById(R.id.operation);
 
         Button btn0 = (Button) findViewById(R.id.btn0);
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Button b = (Button) view;
                 newNumber.append(b.getText().toString());
+                Log.d(TAG, b.getText().toString() + " clicked");
             }
         };
 
