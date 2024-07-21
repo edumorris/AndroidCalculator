@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,8 +17,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView displayOperation;
 
     // variable to hold operands and type of calculations
-    private Double operand1 = null, operand2 = null;
+    private Double operand1 = null;
     private String pendingOperation = "=", TAG = "MainActivity";
+
+    private static final String STATE_PENDING_OPERATION = "PendingOperation", STATE_OPERAND1 = "Operand1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,31 +50,33 @@ public class MainActivity extends AppCompatActivity {
         Button btnSubtract = findViewById(R.id.btnSubtract);
         Button btnAdd = findViewById(R.id.btnAdd);
 
-        View.OnClickListener listener = view -> {
+        View.OnClickListener numListener = view -> {
             Button b = (Button) view;
             newNumber.append(b.getText().toString());
             Log.d(TAG, b.getText().toString() + " clicked");
         };
 
-        btn0.setOnClickListener(listener);
-        btn1.setOnClickListener(listener);
-        btn2.setOnClickListener(listener);
-        btn3.setOnClickListener(listener);
-        btn4.setOnClickListener(listener);
-        btn5.setOnClickListener(listener);
-        btn6.setOnClickListener(listener);
-        btn7.setOnClickListener(listener);
-        btn8.setOnClickListener(listener);
-        btn9.setOnClickListener(listener);
-        btnDecimal.setOnClickListener(listener);
+        btn0.setOnClickListener(numListener);
+        btn1.setOnClickListener(numListener);
+        btn2.setOnClickListener(numListener);
+        btn3.setOnClickListener(numListener);
+        btn4.setOnClickListener(numListener);
+        btn5.setOnClickListener(numListener);
+        btn6.setOnClickListener(numListener);
+        btn7.setOnClickListener(numListener);
+        btn8.setOnClickListener(numListener);
+        btn9.setOnClickListener(numListener);
+        btnDecimal.setOnClickListener(numListener);
 
         View.OnClickListener opListener = view -> {
             Button b = (Button) view;
             String op = b.getText().toString();
             String value = newNumber.getText().toString();
 
-            if (!value.isEmpty()) {
-                performOperation(value, op);
+            try {
+                performOperation(Double.valueOf(value), op);
+            } catch (NumberFormatException ex) {
+                newNumber.setText("");
             }
 
             pendingOperation = op;
@@ -86,11 +91,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void performOperation(String value, String operation) {
+    // To restore state when the app is rotated
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(STATE_PENDING_OPERATION, pendingOperation);
+
+        if (operand1 != null) {
+            outState.putDouble(STATE_OPERAND1, operand1);
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        pendingOperation = savedInstanceState.getString(STATE_PENDING_OPERATION);
+        operand1 = savedInstanceState.getDouble(STATE_OPERAND1);
+
+        displayOperation.setText(pendingOperation);
+    }
+
+    private void performOperation(Double value, String operation) {
         if (null == operand1) {
-            operand1 = Double.valueOf(value);
+            operand1 = value;
         } else {
-            operand2 = Double.valueOf(value);
 
             if (pendingOperation.equals("=")) {
                 pendingOperation = operation;
@@ -98,27 +124,28 @@ public class MainActivity extends AppCompatActivity {
 
             switch (pendingOperation) {
                 case "=":
-                    operand1 = operand2;
+                    operand1 = value;
                     break;
                 case "/":
-                    if ((operand2 == 0)) {
+                    if ((value == 0)) {
                         operand1 = 0.0;
                     } else {
-                        operand1 /= operand2;
+                        operand1 /= value;
                     }
                     break;
                 case "*":
-                    operand1 *= operand2;
+                    operand1 *= value;
                     break;
                 case "-":
-                    operand1 -= operand2;
+                    operand1 -= value;
                     break;
                 case "+":
-                    operand1 += operand2;
+                    operand1 += value;
             }
         }
 
         result.setText(operand1.toString());
         newNumber.setText("");
     }
+
 }
